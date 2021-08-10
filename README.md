@@ -1,5 +1,5 @@
-# Metrics for Simultaneous Subtitling
-This repository contains the code for the evaluation of Simultaneous Speech Translation systems for Subtitling.
+# Metrics for evaluating Simultaneous Live Subtitling
+This repository contains the code for the evaluation of Simultaneous Speech Translation systems for Live Subtitling.
 
 For further details, please refer to the paper: [Simultaneous Speech Translation for Live
 Subtitling: from Delay to Display](https://arxiv.org/pdf/2107.08807.pdf)
@@ -10,6 +10,8 @@ Subtitling: from Delay to Display](https://arxiv.org/pdf/2107.08807.pdf)
 - Average Lagging
 - Length Conformity
 - Reading Speed ✨new✨
+- Delay ✨new✨
+
 
 ## Setup
 The following software is required:
@@ -23,9 +25,9 @@ cd reading_speed
 ```
 
 ## Quick Start
-To replicate our evaluation pipeline, first use the SimulEval tool to generate the output files (`instances.log` and `scores.log`).
+To run our evaluation pipeline, first use the SimulEval tool to generate the output files (`instances.log` and `scores.log`).
 
-The script run for the evaluation with SimulEval is the following:
+The script to run the evaluation with SimulEval is the following:
 ```sh
 simuleval \
     --agent ${FAIRSEQ_REPOSITORY}/examples/speech_to_text/simultaneous_translation/agents/fairseq_simul_st_agent.py \
@@ -39,7 +41,7 @@ simuleval \
     --scores \
     --force-finish
 ```
-where the `DATA_DIR` contains the dataset files (MuST-Cinema in our case), `CONFIG_YAML` is the .yaml file (see [Fairseq S2T](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) documentation for the details), `TGT_FILE` contains the target (`amara.${LANG}` in our case, with `LANG={"it","de","fr"}`), and `SRC_LIST_OF_AUDIO` is the source audio lists obtained running the `audiosegmenter.py` script as follows:
+where the `DATA_DIR` contains the testset files (MuST-Cinema in our case), `CONFIG_YAML` is the .yaml file (see [Fairseq S2T](https://github.com/pytorch/fairseq/tree/master/examples/speech_to_text) documentation for the details), `TGT_FILE` contains the target (`amara.${LANG}` in our case, with `LANG={"it","de","fr"}`), and `SRC_LIST_OF_AUDIO` is the source audio lists obtained running the `audiosegmenter.py` script as follows:
 ```sh
 python audiosegmenter.py --data-root ${DATA_DIR} --split-yaml ${CONFIG_YAML}
 ```
@@ -78,7 +80,7 @@ Too_short (< 6): 20 (0.015128593040847202%) - Average length: 4.4
 where the first percentage (e.g. `0.9107413010590015%`) represents the **Conformity Length** metric.
 
 ### Reading Speed
-The reading speed (rs) metric can be computed, for each type of visualization mode, as follows:
+The reading speed (rs) metric can be computed, for each type of display mode, as follows:
 - **word-for-word**: ```python reading_speed_scrollingwords.py ${K_VALUE} ${INSTANCES_PATH}```
 - **blocks**: ```python reading_speed_blocks.py ${K_VALUE} ${INSTANCES_PATH}```
 - **scrolling lines**: ```python reading_speed_scrollinglines.py ${K_VALUE} ${INSTANCES_PATH}```
